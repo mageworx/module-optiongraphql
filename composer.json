@@ -1,0 +1,26 @@
+{
+    "name": "mageworx/module-optiongraphql",
+    "description": "GraphQl support for APO",
+    "require": {
+        "magento/framework"         : ">=101.0.0 <104",
+        "magento/module-catalog"    : ">=102.0.0 <105",
+        "magento/module-store"      : ">=100.2.0 <102",
+        "magento/module-ui"         : ">=101.0.0 <102",
+        "magento/module-config"     : ">=101.0.0 <102",
+        "mageworx/module-optionbase": ">=2.16.0"
+    },
+    "type": "magento2-module",
+    "version": "2.0.0",
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "MageWorx\\OptionGraphQl\\": ""
+        }
+    }
+}
