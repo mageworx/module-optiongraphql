@@ -1,3 +1,16 @@
+type Query {
+    dependencyState (
+        productSku : String @doc(description: "Product SKU")
+        selectedValues : String @doc(description: "Selected option value IDs to calculate dependencies")
+    ): DependencyState @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\DependencyState") @doc(description: "The query returns DependencyState information")
+}
+
+type DependencyState @doc(description: "DependencyState information, array of hidden options, hidden values and preselected values") {
+    hidden_options: [Int] @doc(description: "An array of hidden options")
+    hidden_values: [Int] @doc(description: "An array of hidden values")
+    preselected_values: String @doc(description: "JSON with preselected values")
+}
+
 interface ProductInterface {
     dependency_rules: String @doc(description: "Dependency Rules")
     hidden_dependents: String @doc(description: "Hidden Dependents")
