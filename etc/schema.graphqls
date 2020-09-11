@@ -1,0 +1,150 @@
+type Query {
+    dependencyState (
+        productSku : String @doc(description: "Product SKU")
+        selectedValues : String @doc(description: "Selected option value IDs to calculate dependencies")
+    ): DependencyState @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\DependencyState") @doc(description: "The query returns DependencyState information")
+}
+
+type DependencyState @doc(description: "DependencyState information, array of hidden options, hidden values and preselected values") {
+    hidden_options: [Int] @doc(description: "An array of hidden options")
+    hidden_values: [Int] @doc(description: "An array of hidden values")
+    preselected_values: String @doc(description: "JSON with preselected values")
+}
+
+interface ProductInterface {
+    dependency_rules: String @doc(description: "Dependency Rules")
+    hidden_dependents: String @doc(description: "Hidden Dependents")
+    absolute_price: String @doc(description: "Absolute Price")
+    absolute_cost: String @doc(description: "Absolute Cost")
+    absolute_weight: String @doc(description: "Absolute Weight")
+    sku_policy: String @doc(description: "Sku Policy")
+    shareable_link: String @doc(description: "Shareable Link")
+    hide_additional_product_price: String @doc(description: "Hide Additional Product Price")
+}
+
+interface CustomizableOptionInterface {
+    description: String @doc(description: "Description")
+    sku_policy: String @doc(description: "Sku Policy")
+    qty_input: String @doc(description: "Qty Input")
+    div_class: String @doc(description: "Div Class")
+    one_time: String @doc(description: "One-time")
+    mageworx_option_gallery: String @doc(description: "Option Gallery Mode")
+    mageworx_option_image_mode: String @doc(description: "Option Image Mode")
+    is_all_customer_groups: String @doc(description: "Is Visible by All Customer Groups")
+    is_all_store_views: String @doc(description: "Is Visible by All Store Views")
+    customer_group: String @doc(description: "Customer Groups Visibility")
+    store_view: String @doc(description: "Store Views Visibility")
+    disabled: String @doc(description: "Is Disabled")
+    disabled_by_values: String @doc(description: "Is Disabled by Values")
+}
+
+type CustomizableCheckboxValue {
+    is_hidden: String @doc(description: "Is Hidden")
+    selection_limit_from: String @doc(description: "Selection Limit From")
+    selection_limit_to: String @doc(description: "Selection Limit To")
+    mageworx_option_type_price: String @doc(description: "MageWorx Option Value Price")
+    mageworx_title: String @doc(description: "MageWorx Option Value Title")
+    special_price: String @doc(description: "Special Price")
+    tier_price: String @doc(description: "Tier Price")
+    description: String @doc(description: "Description")
+    dependency: String @doc(description: "Dependency")
+    dependency_type: String @doc(description: "Dependency Type")
+    cost: String @doc(description: "Cost")
+    images_data: String @doc(description: "Images Data")
+    is_default: String @doc(description: "Is Default")
+    qty_multiplier: String @doc(description: "Quantity Multiplier")
+    weight: String @doc(description: "Weight")
+    weight_type: String @doc(description: "Weight Type")
+    qty: String @doc(description: "Quantity")
+    manage_stock: String @doc(description: "Manage Stock")
+    disabled: String @doc(description: "Is Disabled")
+}
+
+type CustomizableRadioValue {
+    mageworx_option_type_price: String @doc(description: "MageWorx Option Value Price")
+    mageworx_title: String @doc(description: "MageWorx Option Value Title")
+    special_price: String @doc(description: "Special Price")
+    tier_price: String @doc(description: "Tier Price")
+    description: String @doc(description: "Description")
+    dependency: String @doc(description: "Dependency")
+    dependency_type: String @doc(description: "Dependency Type")
+    cost: String @doc(description: "Cost")
+    images_data: String @doc(description: "Images Data")
+    is_default: String @doc(description: "Is Default")
+    qty_multiplier: String @doc(description: "Quantity Multiplier")
+    weight: String @doc(description: "Weight")
+    weight_type: String @doc(description: "Weight Type")
+    qty: String @doc(description: "Quantity")
+    manage_stock: String @doc(description: "Manage Stock")
+    disabled: String @doc(description: "Is Disabled")
+}
+
+type CustomizableDropDownValue {
+    is_swatch: String @doc(description: "Is Swatch")
+    mageworx_option_type_price: String @doc(description: "MageWorx Option Value Price")
+    mageworx_title: String @doc(description: "MageWorx Option Value Title")
+    special_price: String @doc(description: "Special Price")
+    tier_price: String @doc(description: "Tier Price")
+    description: String @doc(description: "Description")
+    dependency: String @doc(description: "Dependency")
+    dependency_type: String @doc(description: "Dependency Type")
+    cost: String @doc(description: "Cost")
+    images_data: String @doc(description: "Images Data")
+    is_default: String @doc(description: "Is Default")
+    qty_multiplier: String @doc(description: "Quantity Multiplier")
+    weight: String @doc(description: "Weight")
+    weight_type: String @doc(description: "Weight Type")
+    qty: String @doc(description: "Quantity")
+    manage_stock: String @doc(description: "Manage Stock")
+    disabled: String @doc(description: "Is Disabled")
+}
+
+type CustomizableMultipleValue {
+    is_swatch: String @doc(description: "Is Swatch")
+    selection_limit_from: String @doc(description: "Selection Limit From")
+    selection_limit_to: String @doc(description: "Selection Limit To")
+    mageworx_option_type_price: String @doc(description: "MageWorx Option Value Price")
+    mageworx_title: String @doc(description: "MageWorx Option Value Title")
+    special_price: String @doc(description: "Special Price")
+    tier_price: String @doc(description: "Tier Price")
+    description: String @doc(description: "Description")
+    dependency: String @doc(description: "Dependency")
+    dependency_type: String @doc(description: "Dependency Type")
+    cost: String @doc(description: "Cost")
+    images_data: String @doc(description: "Images Data")
+    is_default: String @doc(description: "Is Default")
+    qty_multiplier: String @doc(description: "Quantity Multiplier")
+    weight: String @doc(description: "Weight")
+    weight_type: String @doc(description: "Weight Type")
+    qty: String @doc(description: "Quantity")
+    manage_stock: String @doc(description: "Manage Stock")
+    disabled: String @doc(description: "Is Disabled")
+}
+
+type CustomizableFieldValue {
+    dependency: String @doc(description: "Dependency")
+    dependency_type: String @doc(description: "Dependency Type")
+    mageworx_option_price: String @doc(description: "MageWorx Option Price")
+    mageworx_title: String @doc(description: "MageWorx Option Title")
+}
+
+type CustomizableAreaValue {
+    dependency: String @doc(description: "Dependency")
+    dependency_type: String @doc(description: "Dependency Type")
+    mageworx_option_price: String @doc(description: "MageWorx Option Price")
+    mageworx_title: String @doc(description: "MageWorx Option Title")
+}
+
+type CustomizableFileValue {
+    dependency: String @doc(description: "Dependency")
+    dependency_type: String @doc(description: "Dependency Type")
+    mageworx_option_price: String @doc(description: "MageWorx Option Price")
+    mageworx_title: String @doc(description: "MageWorx Option Title")
+}
+
+type CustomizableDateValue {
+    dependency: String @doc(description: "Dependency")
+    dependency_type: String @doc(description: "Dependency Type")
+    mageworx_option_price: String @doc(description: "MageWorx Option Price")
+    mageworx_title: String @doc(description: "MageWorx Option Title")
+}
