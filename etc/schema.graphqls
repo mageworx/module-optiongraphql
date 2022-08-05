@@ -3,6 +3,16 @@ type Query {
         productSku : String @doc(description: "Product SKU")
         selectedValues : String @doc(description: "Selected option value IDs to calculate dependencies")
     ): DependencyState @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\DependencyState") @doc(description: "The query returns DependencyState information")
+    productFinalPrice (
+        productSku : String @doc(description: "Product SKU")
+        currentOptions : String @doc(description: "Current options json")
+        currentQty : Float @doc(description: "Current product qty")
+    ): ProductFinalPrice @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\ProductFinalPrice") @doc(description: "The query return final product price")
+
+}
+
+type ProductFinalPrice @doc(description: "ProductFinalPrice, calculeated final product price with current option configuration") {
+    final_price: [Float] @doc(description: "final product price")
 }
 
 type DependencyState @doc(description: "DependencyState information, array of hidden options, hidden values and preselected values") {
