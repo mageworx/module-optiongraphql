@@ -36,10 +36,11 @@ interface CustomizableOptionInterface {
     store_view: String @doc(description: "Store Views Visibility")
     disabled: String @doc(description: "Is Disabled")
     disabled_by_values: String @doc(description: "Is Disabled by Values")
+    is_swatch: String @doc(description: "Is Swatch")
+    is_hidden: String @doc(description: "Is Hidden")
 }
 
 type CustomizableCheckboxValue {
-    is_hidden: String @doc(description: "Is Hidden")
     selection_limit_from: String @doc(description: "Selection Limit From")
     selection_limit_to: String @doc(description: "Selection Limit To")
     mageworx_option_type_price: String @doc(description: "MageWorx Option Value Price")
@@ -80,7 +81,6 @@ type CustomizableRadioValue {
 }
 
 type CustomizableDropDownValue {
-    is_swatch: String @doc(description: "Is Swatch")
     mageworx_option_type_price: String @doc(description: "MageWorx Option Value Price")
     mageworx_title: String @doc(description: "MageWorx Option Value Title")
     special_price: String @doc(description: "Special Price")
@@ -100,7 +100,6 @@ type CustomizableDropDownValue {
 }
 
 type CustomizableMultipleValue {
-    is_swatch: String @doc(description: "Is Swatch")
     selection_limit_from: String @doc(description: "Selection Limit From")
     selection_limit_to: String @doc(description: "Selection Limit To")
     mageworx_option_type_price: String @doc(description: "MageWorx Option Value Price")
