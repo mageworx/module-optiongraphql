@@ -12,7 +12,7 @@ type Query {
 }
 
 type ProductFinalPrice @doc(description: "ProductFinalPrice, calculeated final product price with current option configuration") {
-    final_price: [Float] @doc(description: "final product price")
+    final_price: Float @doc(description: "final product price")
 }
 
 type DependencyState @doc(description: "DependencyState information, array of hidden options, hidden values and preselected values") {

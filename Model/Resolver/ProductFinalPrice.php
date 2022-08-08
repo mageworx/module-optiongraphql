@@ -57,8 +57,10 @@ class ProductFinalPrice implements ResolverInterface
         $this->serializer        = $serializer;
     }
 
+
     /**
      * Fetches the data from persistence models and format it according to the GraphQL schema.
+     * Example $args['currentOptions'] = '{"1120":"8076","1121":"","1122":""}'
      *
      * @param \Magento\Framework\GraphQl\Config\Element\Field $field
      * @param ContextInterface $context
@@ -76,11 +78,10 @@ class ProductFinalPrice implements ResolverInterface
         array $args = null
     ) {
         $data = [];
-//        $args['currentOptions']     = '{"1120":"8076","1121":"","1122":""}'; Example
 
         try {
             $productSku           = $args['productSku'] ?? false;
-            $selectedValuesString = $args['currentOptions'] ?? [];
+            $selectedValuesString = $args['currentOptions'] ?? false;
             $qty                  = $args['currentQty'] ?? 1;
 
             if ($selectedValuesString && $productSku) {
@@ -106,4 +107,6 @@ class ProductFinalPrice implements ResolverInterface
 
         return $data;
     }
+
+
 }
