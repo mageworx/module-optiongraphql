@@ -91,6 +91,8 @@ class ProductFinalPrice implements ResolverInterface
                 }
 
                 $unserializedOptions = $this->serializer->unserialize($selectedValuesString);
+//                $unserializedOptions = '{"1120":"8076","1121":"","1122":""}';
+//                $unserializedOptions = $this->serializer->unserialize($unserializedOptions);
                 if ($unserializedOptions) {
                     $optionIds = array_keys($unserializedOptions);
                     $product->addCustomOption('option_ids', implode(',', $optionIds));
@@ -107,6 +109,4 @@ class ProductFinalPrice implements ResolverInterface
 
         return $data;
     }
-
-
 }
