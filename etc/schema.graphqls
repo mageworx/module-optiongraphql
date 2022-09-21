@@ -5,17 +5,18 @@ type Query {
     ): DependencyState @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\DependencyState") @doc(description: "The query returns DependencyState information")
     productFinalPrice (
         productSku : String @doc(description: "Product SKU")
-        currentOptions : String @doc(description: "Current options json")
+        currentOptions : String @doc(description: "Current options as JSON")
         currentQty : Float @doc(description: "Current product qty")
-    ): ProductFinalPrice @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\ProductFinalPrice") @doc(description: "The query return final product price")
+    ): ProductFinalPrice @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\ProductFinalPrice") @doc(description: "The query returns final product price")
     productExtendConfig (
         productSku : String @doc(description: "Product SKU")
         qty : Float @doc(description: "Product Qty")
-    ): ProductExtendConfig @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\ProductExtendConfig") @doc(description: "The query return product extended config")
-    advancedProductOptionsSettings : AdvancedProductOptionsSettings @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\AdvancedProductOptionsSettings") @doc(description: "The query return advanced product option config settings")
+    ): ProductExtendConfig @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\ProductExtendConfig") @doc(description: "The query returns product extended config")
+    advancedProductOptionsSettings : AdvancedProductOptionsSettings @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\AdvancedProductOptionsSettings") @doc(description: "The query returns advanced product option configuration settings")
 }
 
-type ProductFinalPrice @doc(description: "ProductFinalPrice, calculeated final product price with current option configuration") {
+type ProductFinalPrice @doc(description: "ProductFinalPrice, final product price calculated using current options configuration") {
+    base_price: Float @doc(description: "base product price")
     final_price: Float @doc(description: "final product price")
 }
 
@@ -25,7 +26,7 @@ type DependencyState @doc(description: "DependencyState information, array of hi
     preselected_values: String @doc(description: "JSON with preselected values")
 }
 
-type ProductExtendConfig @doc(description: "DependencyState information, array of hidden options, hidden values and preselected values") {
+type ProductExtendConfig @doc(description: "ProductExtendConfig information, array of product price configuration") {
     product_json_config: String @doc(description: "An array of product config")
     locale_price_format: String @doc(description: "An array of local price format")
     product_final_price_incl_tax: Float @doc(description: "Product final price incl tax")
@@ -36,7 +37,7 @@ type ProductExtendConfig @doc(description: "DependencyState information, array o
     catalog_price_contains_tax: Boolean @doc(description: "Catalog price contains tax")
 }
 
-type AdvancedProductOptionsSettings @doc(description: "DependencyState information, array of hidden options, hidden values and preselected values") {
+type AdvancedProductOptionsSettings @doc(description: "AdvancedProductOptionsSettings information, array of advanced product option configuration settings") {
     is_swatch_title: Boolean @doc(description: "Display swatch as title")
     is_show_swatch_price: Boolean @doc(description: "Show price in swatch")
     is_qty_input_enabled: Boolean @doc(description: "Enable qty input feature")

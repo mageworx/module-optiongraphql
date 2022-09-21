@@ -132,9 +132,6 @@ class ProductExtendConfig implements ResolverInterface
             $qty        = $args['Qty'] ?? 1;
 
             $product = $this->productRepository->get($productSku);
-            if (!$product) {
-                throw new GraphQlNoSuchEntityException(__("Wrong product SKU"));
-            }
 
             $data['product_json_config']            = $this->baseConfig->getProductJsonConfig($product);
             $data['locale_price_format']            = $this->getLocalePriceFormat();
@@ -162,6 +159,4 @@ class ProductExtendConfig implements ResolverInterface
 
         return $this->serializer->serialize($data);
     }
-
-
 }

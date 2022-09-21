@@ -17,6 +17,7 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Catalog\Model\Product\Type\Price;
 use Magento\Framework\Serialize\Serializer\Json as Serializer;
+use MageWorx\OptionBase\Helper\Price as BasePriceHelper;
 
 class ProductFinalPrice implements ResolverInterface
 {
@@ -38,7 +39,12 @@ class ProductFinalPrice implements ResolverInterface
     /**
      * Item options prefix
      */
-    const OPTION_PREFIX = 'option_';
+    const OPTION_PREFIX = \Magento\Catalog\Model\Product\Type\AbstractType::OPTION_PREFIX;
+
+    /**
+     * @var BasePriceHelper
+     */
+    protected $basePriceHelper;
 
     /**
      * ProductFinalPrice constructor.
@@ -46,15 +52,18 @@ class ProductFinalPrice implements ResolverInterface
      * @param ProductRepository $productRepository
      * @param Price $priceModel
      * @param Serializer $serializer
+     * @param BasePriceHelper $basePriceHelper
      */
     public function __construct(
         ProductRepository $productRepository,
         Price $priceModel,
-        Serializer $serializer
+        Serializer $serializer,
+        BasePriceHelper $basePriceHelper
     ) {
         $this->productRepository = $productRepository;
         $this->priceModel        = $priceModel;
         $this->serializer        = $serializer;
+        $this->basePriceHelper   = $basePriceHelper;
     }
 
 
@@ -85,23 +94,30 @@ class ProductFinalPrice implements ResolverInterface
             $qty                  = $args['currentQty'] ?? 1;
 
             if ($selectedValuesString && $productSku) {
-                $product = $this->productRepository->get($productSku);
-                if (!$product) {
-                    throw new GraphQlNoSuchEntityException(__("Wrong product SKU"));
-                }
-
+                $product             = $this->productRepository->get($productSku);
                 $unserializedOptions = $this->serializer->unserialize($selectedValuesString);
-//                $unserializedOptions = '{"1120":"8076","1121":"","1122":""}';
-//                $unserializedOptions = $this->serializer->unserialize($unserializedOptions);
                 if ($unserializedOptions) {
                     $optionIds = array_keys($unserializedOptions);
                     $product->addCustomOption('option_ids', implode(',', $optionIds));
                     foreach ($unserializedOptions as $optionId => $optionValue) {
                         $product->addCustomOption(self::OPTION_PREFIX . $optionId, $optionValue);
                     }
+
+                    $product->setHasCustomOptions(true);
+                    $basePrice          = (float)$this->priceModel->getFinalPrice($qty, $product);
+                    $data['base_price'] = $basePrice;
+
+                    $isCatalogPriceContainsTax = $this->basePriceHelper->getCatalogPriceContainsTax(
+                        $product->getStoreId()
+                    );
+                    $needTax                   = !$isCatalogPriceContainsTax ?? true;
+
+                    $data['final_price'] = (float)$this->basePriceHelper->getTaxPrice(
+                        $product,
+                        $basePrice,
+                        $needTax
+                    );
                 }
-                $product->setHasCustomOptions(true);
-                $data['final_price'] = (float)$this->priceModel->getFinalPrice($qty, $product);
             }
         } catch (NoSuchEntityException $e) {
             throw new GraphQlNoSuchEntityException(__($e->getMessage()), $e);
