@@ -13,11 +13,9 @@ type Query {
         qty : Float @doc(description: "Product Qty")
     ): ProductExtendConfig @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\ProductExtendConfig") @doc(description: "The query returns product extended config")
     advancedProductOptionsSettings : AdvancedProductOptionsSettings @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\AdvancedProductOptionsSettings") @doc(description: "The query returns advanced product option configuration settings")
-}
-
-type ProductFinalPrice @doc(description: "ProductFinalPrice, final product price calculated using current options configuration") {
-    base_price: Float @doc(description: "base product price")
-    final_price: Float @doc(description: "final product price")
+    swatchMediaData (
+        productSku : String @doc(description: "Product SKU")
+    ): SwatchMediaData @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\SwatchMediaData") @doc(description: "The query returns swatch media data")
 }
 
 type DependencyState @doc(description: "DependencyState information, array of hidden options, hidden values and preselected values") {
@@ -26,9 +24,14 @@ type DependencyState @doc(description: "DependencyState information, array of hi
     preselected_values: String @doc(description: "JSON with preselected values")
 }
 
+type ProductFinalPrice @doc(description: "ProductFinalPrice, final product price calculated using current options configuration") {
+    base_price: Float @doc(description: "base product price")
+    final_price: Float @doc(description: "final product price")
+}
+
 type ProductExtendConfig @doc(description: "ProductExtendConfig information, array of product price configuration") {
-    product_json_config: String @doc(description: "An array of product config")
-    locale_price_format: String @doc(description: "An array of local price format")
+    product_json_config: String @doc(description: "JSON with product config")
+    locale_price_format: String @doc(description: "JSON with local price format")
     product_final_price_incl_tax: Float @doc(description: "Product final price incl tax")
     product_final_price_excl_tax: Float @doc(description: "Product final price excl tax")
     product_regular_price_incl_tax: Float @doc(description: "Product regular price incl tax")
@@ -55,6 +58,10 @@ type AdvancedProductOptionsSettings @doc(description: "AdvancedProductOptionsSet
     text_swatch_max_width: String @doc(description: "Swatch max width")
     swatch_width: Int @doc(description: "Swatch width")
     swatch_height: Int @doc(description: "Swatch height")
+}
+
+type SwatchMediaData @doc(description: "SwatchMediaData information, array of swatch media data") {
+    swatch_media_data: String @doc(description: "JSON with swatch media data")
 }
 
 interface ProductInterface {
