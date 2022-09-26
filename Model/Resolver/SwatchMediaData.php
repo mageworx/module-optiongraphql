@@ -76,10 +76,12 @@ class SwatchMediaData implements ResolverInterface
         try {
             $productSku = $args['productSku'] ?? false;
             $product    = $this->productRepository->get($productSku);
+            $width      = $args['width'] ?? 0;
+            $height     = $args['height'] ?? 0;
 
             $data = [
                 'swatch_media_data' =>
-                    $this->swatchData->getSwatchMediaData($product, $this->pageFactory->create()->getLayout())
+                    $this->swatchData->getSwatchMediaData($product, $width, $height)
 
             ];
         } catch (NoSuchEntityException $e) {
