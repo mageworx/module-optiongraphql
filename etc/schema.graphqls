@@ -16,7 +16,7 @@ type Query {
     swatchMediaData (
         productSku : String @doc(description: "Product SKU")
         width : String @doc(description: "Page image width")
-        heigth : String @doc(description: "Page image geigth")
+        height : String @doc(description: "Page image height")
     ): SwatchMediaData @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\SwatchMediaData") @doc(description: "The query returns swatch media data")
 }
 
