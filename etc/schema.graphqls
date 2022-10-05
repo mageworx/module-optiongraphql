@@ -3,12 +3,67 @@ type Query {
         productSku : String @doc(description: "Product SKU")
         selectedValues : String @doc(description: "Selected option value IDs to calculate dependencies")
     ): DependencyState @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\DependencyState") @doc(description: "The query returns DependencyState information")
+    productFinalPrice (
+        productSku : String @doc(description: "Product SKU")
+        currentOptions : String @doc(description: "Current options as JSON")
+        currentQty : Float @doc(description: "Current product qty")
+    ): ProductFinalPrice @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\ProductFinalPrice") @doc(description: "The query returns final product price")
+    productExtendConfig (
+        productSku : String @doc(description: "Product SKU")
+        qty : Float @doc(description: "Product Qty")
+    ): ProductExtendConfig @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\ProductExtendConfig") @doc(description: "The query returns product extended config")
+    advancedProductOptionsSettings : AdvancedProductOptionsSettings @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\AdvancedProductOptionsSettings") @doc(description: "The query returns advanced product option configuration settings")
+    swatchMediaData (
+        productSku : String @doc(description: "Product SKU")
+        width : String @doc(description: "Page image width")
+        height : String @doc(description: "Page image height")
+    ): SwatchMediaData @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\SwatchMediaData") @doc(description: "The query returns swatch media data")
 }
 
 type DependencyState @doc(description: "DependencyState information, array of hidden options, hidden values and preselected values") {
     hidden_options: [Int] @doc(description: "An array of hidden options")
     hidden_values: [Int] @doc(description: "An array of hidden values")
     preselected_values: String @doc(description: "JSON with preselected values")
+}
+
+type ProductFinalPrice @doc(description: "ProductFinalPrice, final product price calculated using current options configuration") {
+    base_price: Float @doc(description: "base product price")
+    final_price: Float @doc(description: "final product price")
+}
+
+type ProductExtendConfig @doc(description: "ProductExtendConfig information, array of product price configuration") {
+    product_json_config: String @doc(description: "JSON with product config")
+    locale_price_format: String @doc(description: "JSON with local price format")
+    product_final_price_incl_tax: Float @doc(description: "Product final price incl tax")
+    product_final_price_excl_tax: Float @doc(description: "Product final price excl tax")
+    product_regular_price_incl_tax: Float @doc(description: "Product regular price incl tax")
+    product_regular_price_excl_tax: Float @doc(description: "Product regular price excl tax")
+    price_display_mode: Int @doc(description: "Price display mode")
+    catalog_price_contains_tax: Boolean @doc(description: "Catalog price contains tax")
+}
+
+type AdvancedProductOptionsSettings @doc(description: "AdvancedProductOptionsSettings information, array of advanced product option configuration settings") {
+    is_swatch_title: Boolean @doc(description: "Display swatch as title")
+    is_show_swatch_price: Boolean @doc(description: "Show price in swatch")
+    is_qty_input_enabled: Boolean @doc(description: "Enable qty input feature")
+    is_enabled_shareable_link: Boolean @doc(description: "Enable shareable link feature")
+    is_enabled_additional_product_price_field: Boolean @doc(description: "Enable additional product price field")
+    tooltip_image_thumbnail_size: Int @doc(description: "Tooltip image size")
+    additional_product_price_field_lable: String @doc(description: "Addition product price field label")
+    additional_product_price_field_mode: String @doc(description: "Addition product price field mode")
+    base_image_thumbnail_height: Int @doc(description: "Base image height")
+    base_image_thumbnail_width: Int @doc(description: "Base image width")
+    default_qty_label: String @doc(description: "Qty label")
+    shareable_link_hint_text: String @doc(description: "Shareable link hint text")
+    shareable_link_success_text: String @doc(description: "Shareable link success text")
+    shareable_link_text: String @doc(description: "Shareable link text")
+    text_swatch_max_width: String @doc(description: "Swatch max width")
+    swatch_width: Int @doc(description: "Swatch width")
+    swatch_height: Int @doc(description: "Swatch height")
+}
+
+type SwatchMediaData @doc(description: "SwatchMediaData information, array of swatch media data") {
+    swatch_media_data: String @doc(description: "JSON with swatch media data")
 }
 
 interface ProductInterface {
@@ -36,10 +91,11 @@ interface CustomizableOptionInterface {
     store_view: String @doc(description: "Store Views Visibility")
     disabled: String @doc(description: "Is Disabled")
     disabled_by_values: String @doc(description: "Is Disabled by Values")
+    is_swatch: String @doc(description: "Is Swatch")
+    is_hidden: String @doc(description: "Is Hidden")
 }
 
 type CustomizableCheckboxValue {
-    is_hidden: String @doc(description: "Is Hidden")
     selection_limit_from: String @doc(description: "Selection Limit From")
     selection_limit_to: String @doc(description: "Selection Limit To")
     mageworx_option_type_price: String @doc(description: "MageWorx Option Value Price")
@@ -80,7 +136,6 @@ type CustomizableRadioValue {
 }
 
 type CustomizableDropDownValue {
-    is_swatch: String @doc(description: "Is Swatch")
     mageworx_option_type_price: String @doc(description: "MageWorx Option Value Price")
     mageworx_title: String @doc(description: "MageWorx Option Value Title")
     special_price: String @doc(description: "Special Price")
@@ -100,7 +155,6 @@ type CustomizableDropDownValue {
 }
 
 type CustomizableMultipleValue {
-    is_swatch: String @doc(description: "Is Swatch")
     selection_limit_from: String @doc(description: "Selection Limit From")
     selection_limit_to: String @doc(description: "Selection Limit To")
     mageworx_option_type_price: String @doc(description: "MageWorx Option Value Price")

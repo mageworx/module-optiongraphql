@@ -95,16 +95,6 @@ class DependencyState implements ResolverInterface
                 ];
             }
 
-            if (!empty($data['hidden_values']) && !empty($selectedValues)) {
-                foreach ($selectedValues as $selectedValue) {
-                    if (!in_array($selectedValue, $data['hidden_values'])) {
-                        continue;
-                    }
-                    throw new GraphQlInputException(
-                        __("Selected value '%1' is wrong and should be hidden", $selectedValue)
-                    );
-                }
-            }
             $data['preselected_values'] = $this->baseHelper->jsonEncode($data['preselected_values']);
         } catch (NoSuchEntityException $e) {
             throw new GraphQlNoSuchEntityException(__($e->getMessage()), $e);
