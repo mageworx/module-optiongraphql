@@ -15,8 +15,8 @@ type Query {
     advancedProductOptionsSettings : AdvancedProductOptionsSettings @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\AdvancedProductOptionsSettings") @doc(description: "The query returns advanced product option configuration settings")
     swatchMediaData (
         productSku : String @doc(description: "Product SKU")
-        width : String @doc(description: "Page image width")
-        height : String @doc(description: "Page image height")
+        width : Int @doc(description: "Page image width")
+        height : Int @doc(description: "Page image height")
     ): SwatchMediaData @resolver(class: "MageWorx\\OptionGraphQl\\Model\\Resolver\\SwatchMediaData") @doc(description: "The query returns swatch media data")
 }
 
