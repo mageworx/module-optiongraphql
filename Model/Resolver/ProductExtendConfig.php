@@ -15,6 +15,7 @@ use Magento\Framework\GraphQl\Query\Resolver\ContextInterface;
 use Magento\Framework\GraphQl\Query\Resolver\Value;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
+use Magento\Framework\Locale\Format;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Serialize\Serializer\Json as Serializer;
 use MageWorx\OptionBase\Model\Product\Option\Attributes as OptionAttributes;
@@ -22,59 +23,29 @@ use MageWorx\OptionBase\Model\Product\Option\Value\Attributes as OptionValueAttr
 use MageWorx\OptionBase\Helper\Data as BaseHelper;
 use MageWorx\OptionBase\Helper\Price as BasePriceHelper;
 use MageWorx\OptionBase\Model\Config\Base as BaseConfig;
+use MageWorx\OptionBase\Block\Product\View\Options as ViewOptions;
+use Magento\Framework\Registry;
 
 
 class ProductExtendConfig implements ResolverInterface
 {
-    /**
-     * @var \Magento\Framework\Locale\Format
-     */
-    protected $localeFormat;
-
-    /**
-     * @var PriceCurrencyInterface
-     */
-    protected $priceCurrency;
-
-    /**
-     * @var OptionAttributes
-     */
-    protected $optionAttributes;
-
-    /**
-     * @var OptionValueAttributes
-     */
-    protected $optionValueAttributes;
-
-    /**
-     * @var BaseHelper
-     */
-    protected $baseHelper;
-
-    /**
-     * @var BasePriceHelper
-     */
-    protected $basePriceHelper;
-
-    /**
-     * @var BaseConfig
-     */
-    protected $baseConfig;
-
-    /**
-     * @var Serializer
-     */
-    protected $serializer;
-
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
+    protected ViewOptions $viewOptions;
+    protected Format $localeFormat;
+    protected PriceCurrencyInterface $priceCurrency;
+    protected OptionAttributes $optionAttributes;
+    protected OptionValueAttributes $optionValueAttributes;
+    protected BaseHelper $baseHelper;
+    protected BasePriceHelper $basePriceHelper;
+    protected BaseConfig $baseConfig;
+    protected Serializer $serializer;
+    protected ProductRepository $productRepository;
+    protected Registry $registry;
 
     /**
      * ExtendConfig constructor.
      *
-     * @param \Magento\Framework\Locale\Format $localeFormat
+     * @param ViewOptions $viewOptions
+     * @param Format $localeFormat
      * @param PriceCurrencyInterface $priceCurrency
      * @param OptionAttributes $optionAttributes
      * @param OptionValueAttributes $optionValueAttributes
@@ -83,9 +54,11 @@ class ProductExtendConfig implements ResolverInterface
      * @param BaseConfig $baseConfig
      * @param Serializer $serializer
      * @param ProductRepository $productRepository
+     * @param Registry $registry
      */
     public function __construct(
-        \Magento\Framework\Locale\Format $localeFormat,
+        ViewOptions $viewOptions,
+        Format $localeFormat,
         PriceCurrencyInterface $priceCurrency,
         OptionAttributes $optionAttributes,
         OptionValueAttributes $optionValueAttributes,
@@ -93,8 +66,10 @@ class ProductExtendConfig implements ResolverInterface
         BasePriceHelper $basePriceHelper,
         BaseConfig $baseConfig,
         Serializer $serializer,
-        ProductRepository $productRepository
+        ProductRepository $productRepository,
+        Registry $registry
     ) {
+        $this->viewOptions           = $viewOptions;
         $this->localeFormat          = $localeFormat;
         $this->priceCurrency         = $priceCurrency;
         $this->optionAttributes      = $optionAttributes;
@@ -104,6 +79,7 @@ class ProductExtendConfig implements ResolverInterface
         $this->baseConfig            = $baseConfig;
         $this->serializer            = $serializer;
         $this->productRepository     = $productRepository;
+        $this->registry              = $registry;
     }
 
 
@@ -133,12 +109,30 @@ class ProductExtendConfig implements ResolverInterface
 
             $product = $this->productRepository->get($productSku);
 
+            if (empty($this->registry->registry('current_product'))) {
+                $this->registry->register('current_product', $product);
+            }
+
+            $regularPriceExclTax = $this->priceCurrency->convert(
+                $this->baseConfig->getProductRegularPrice($product, false)
+            );
+            $regularPriceInclTax = $this->priceCurrency->convert(
+                $this->baseConfig->getProductRegularPrice($product, true)
+            );
+            $finalPriceExclTax   = $this->priceCurrency->convert(
+                $this->baseConfig->getProductFinalPrice($product, false, $qty)
+            );
+            $finalPriceInclTax   = $this->priceCurrency->convert(
+                $this->baseConfig->getProductFinalPrice($product, true, $qty)
+            );
+
+            $data['option_json_config']             = $this->viewOptions->getJsonConfig();
             $data['product_json_config']            = $this->baseConfig->getProductJsonConfig($product);
             $data['locale_price_format']            = $this->getLocalePriceFormat();
-            $data['product_final_price_incl_tax']   = $this->baseConfig->getProductFinalPrice($product, true, $qty);
-            $data['product_final_price_excl_tax']   = $this->baseConfig->getProductFinalPrice($product, false, $qty);
-            $data['product_regular_price_incl_tax'] = $this->baseConfig->getProductRegularPrice($product, true);
-            $data['product_regular_price_excl_tax'] = $this->baseConfig->getProductRegularPrice($product, false);
+            $data['product_final_price_incl_tax']   = $finalPriceInclTax;
+            $data['product_final_price_excl_tax']   = $finalPriceExclTax;
+            $data['product_regular_price_incl_tax'] = $regularPriceInclTax;
+            $data['product_regular_price_excl_tax'] = $regularPriceExclTax;
             $data['price_display_mode']             = $this->baseConfig->getPriceDisplayMode();
             $data['catalog_price_contains_tax']     = $this->baseConfig->getCatalogPriceContainsTax();
 
@@ -149,9 +143,6 @@ class ProductExtendConfig implements ResolverInterface
         return $data;
     }
 
-    /**
-     * @return string
-     */
     public function getLocalePriceFormat(): string
     {
         $data                = $this->localeFormat->getPriceFormat();

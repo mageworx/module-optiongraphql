@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace MageWorx\OptionGraphQl\Model\Resolver;
 
-
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
@@ -21,22 +20,9 @@ use MageWorx\OptionFeatures\Model\SwatchMediaData as SwatchData;
 
 class SwatchMediaData implements ResolverInterface
 {
-    /**
-     * @var SwatchData
-     */
-    protected $swatchData;
-
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
-
-    /**
-     * Page factory
-     *
-     * @var PageFactory
-     */
-    protected $pageFactory;
+    protected SwatchData $swatchData;
+    protected ProductRepository $productRepository;
+    protected PageFactory $pageFactory;
 
     /**
      * SwatchMediaData constructor.
