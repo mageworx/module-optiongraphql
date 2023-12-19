@@ -10,41 +10,26 @@ namespace MageWorx\OptionGraphQl\Model\Resolver;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
-use Magento\Framework\GraphQl\Query\Resolver\ContextInterface;
-use Magento\Framework\GraphQl\Query\Resolver\Value;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Catalog\Model\Product\Type\Price;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Serialize\Serializer\Json as Serializer;
 use MageWorx\OptionBase\Helper\Price as BasePriceHelper;
 
 class ProductFinalPrice implements ResolverInterface
 {
     /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
-
-    /**
-     * @var Price
-     */
-    protected $priceModel;
-
-    /**
-     * @var Serializer
-     */
-    protected $serializer;
-
-    /**
      * Item options prefix
      */
     const OPTION_PREFIX = \Magento\Catalog\Model\Product\Type\AbstractType::OPTION_PREFIX;
 
-    /**
-     * @var BasePriceHelper
-     */
-    protected $basePriceHelper;
+    protected ProductRepository $productRepository;
+    protected Price $priceModel;
+    protected Serializer $serializer;
+    protected BasePriceHelper $basePriceHelper;
+    protected PriceCurrencyInterface $priceCurrency;
 
     /**
      * ProductFinalPrice constructor.
@@ -58,12 +43,14 @@ class ProductFinalPrice implements ResolverInterface
         ProductRepository $productRepository,
         Price $priceModel,
         Serializer $serializer,
-        BasePriceHelper $basePriceHelper
+        BasePriceHelper $basePriceHelper,
+        PriceCurrencyInterface $priceCurrency
     ) {
         $this->productRepository = $productRepository;
         $this->priceModel        = $priceModel;
         $this->serializer        = $serializer;
         $this->basePriceHelper   = $basePriceHelper;
+        $this->priceCurrency     = $priceCurrency;
     }
 
 
@@ -71,13 +58,13 @@ class ProductFinalPrice implements ResolverInterface
      * Fetches the data from persistence models and format it according to the GraphQL schema.
      * Example $args['currentOptions'] = '{"1120":"8076","1121":"","1122":""}'
      *
-     * @param \Magento\Framework\GraphQl\Config\Element\Field $field
-     * @param ContextInterface $context
+     * @param Field $field
+     * @param $context
      * @param ResolveInfo $info
      * @param array|null $value
      * @param array|null $args
-     * @return mixed|Value
-     * @throws \Exception
+     * @return array
+     * @throws GraphQlNoSuchEntityException
      */
     public function resolve(
         Field $field,
@@ -85,7 +72,7 @@ class ProductFinalPrice implements ResolverInterface
         ResolveInfo $info,
         array $value = null,
         array $args = null
-    ) {
+    ): array {
         $data = [];
 
         try {
@@ -104,7 +91,8 @@ class ProductFinalPrice implements ResolverInterface
                     }
 
                     $product->setHasCustomOptions(true);
-                    $basePrice          = (float)$this->priceModel->getFinalPrice($qty, $product);
+                    $basePrice = (float)$this->priceModel->getFinalPrice($qty, $product);
+                    $basePrice = $this->priceCurrency->convert($basePrice);
                     $data['base_price'] = $basePrice;
 
                     $isCatalogPriceContainsTax = $this->basePriceHelper->getCatalogPriceContainsTax(

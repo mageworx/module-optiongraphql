@@ -15,6 +15,7 @@ use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Framework\Serialize\SerializerInterface;
 use MageWorx\OptionBase\Model\HiddenDependents as HiddenDependentsStorage;
 use MageWorx\OptionBase\Helper\Data as BaseHelper;
 
@@ -23,25 +24,11 @@ use MageWorx\OptionBase\Helper\Data as BaseHelper;
  */
 class DependencyState implements ResolverInterface
 {
-    /**
-     * @var BaseHelper
-     */
-    protected $baseHelper;
-
-    /**
-     * @var ProductRepositoryInterface
-     */
-    protected $productRepository;
-
-    /**
-     * @var HiddenDependentsStorage
-     */
-    protected $hiddenDependentsStorage;
-
-    /**
-     * @var ManagerInterface
-     */
-    protected $eventManager;
+    protected BaseHelper $baseHelper;
+    protected ProductRepositoryInterface $productRepository;
+    protected HiddenDependentsStorage $hiddenDependentsStorage;
+    protected ManagerInterface $eventManager;
+    protected SerializerInterface $serializer;
 
     /**
      * @param BaseHelper $baseHelper
@@ -53,12 +40,14 @@ class DependencyState implements ResolverInterface
         BaseHelper $baseHelper,
         ProductRepositoryInterface $productRepository,
         HiddenDependentsStorage $hiddenDependentsStorage,
-        ManagerInterface $eventManager
+        ManagerInterface $eventManager,
+        SerializerInterface $serializer
     ) {
         $this->baseHelper              = $baseHelper;
         $this->productRepository       = $productRepository;
         $this->hiddenDependentsStorage = $hiddenDependentsStorage;
         $this->eventManager            = $eventManager;
+        $this->serializer              = $serializer;
     }
 
     /**
@@ -70,7 +59,7 @@ class DependencyState implements ResolverInterface
         ResolveInfo $info,
         array $value = null,
         array $args = null
-    ) {
+    ): array {
         try {
             $productSku           = $args['productSku'] ?? false;
             $selectedValuesString = $args['selectedValues'] ?? [];
@@ -78,7 +67,7 @@ class DependencyState implements ResolverInterface
 
             $product = $this->productRepository->get($productSku);
             if (!$product) {
-                throw new GraphQlNoSuchEntityException(__("Wrong product SKU"));
+                throw new GraphQlNoSuchEntityException(__('Wrong product SKU'));
             }
 
             $this->eventManager->dispatch(
@@ -95,7 +84,7 @@ class DependencyState implements ResolverInterface
                 ];
             }
 
-            $data['preselected_values'] = $this->baseHelper->jsonEncode($data['preselected_values']);
+            $data['preselected_values'] = $this->serializer->serialize($data['preselected_values']);
         } catch (NoSuchEntityException $e) {
             throw new GraphQlNoSuchEntityException(__($e->getMessage()), $e);
         }

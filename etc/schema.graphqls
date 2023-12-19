@@ -32,6 +32,7 @@ type ProductFinalPrice @doc(description: "ProductFinalPrice, final product price
 }
 
 type ProductExtendConfig @doc(description: "ProductExtendConfig information, array of product price configuration") {
+    option_json_config: String @doc(description: "JSON with option config")
     product_json_config: String @doc(description: "JSON with product config")
     locale_price_format: String @doc(description: "JSON with local price format")
     product_final_price_incl_tax: Float @doc(description: "Product final price incl tax")
@@ -43,23 +44,41 @@ type ProductExtendConfig @doc(description: "ProductExtendConfig information, arr
 }
 
 type AdvancedProductOptionsSettings @doc(description: "AdvancedProductOptionsSettings information, array of advanced product option configuration settings") {
-    is_swatch_title: Boolean @doc(description: "Display swatch as title")
-    is_show_swatch_price: Boolean @doc(description: "Show price in swatch")
-    is_qty_input_enabled: Boolean @doc(description: "Enable qty input feature")
-    is_enabled_shareable_link: Boolean @doc(description: "Enable shareable link feature")
+    product_price_display_mode: String @doc(description: "Product Price Display Mode")
     is_enabled_additional_product_price_field: Boolean @doc(description: "Enable additional product price field")
-    tooltip_image_thumbnail_size: Int @doc(description: "Tooltip image size")
-    additional_product_price_field_lable: String @doc(description: "Addition product price field label")
+    additional_product_price_field_label: String @doc(description: "Addition product price field label")
     additional_product_price_field_mode: String @doc(description: "Addition product price field mode")
+    is_qty_input_enabled: Boolean @doc(description: "Enable qty input feature")
+    default_qty_label: String @doc(description: "Qty label")
+    is_option_value_description_enabled: Boolean @doc(description: "nable Option's Value Description")
+    is_option_description_enabled: Boolean @doc(description: "Enable Option Description")
+    get_option_description_mode: Int @doc(description: "Get Option Description mode. 0 - No, 1 - Tooltip, 2 - Plain Text Beside Option")
+    selection_limit_template_data: String @doc(description: "JSON with selection limit tamplate data")
     base_image_thumbnail_height: Int @doc(description: "Base image height")
     base_image_thumbnail_width: Int @doc(description: "Base image width")
-    default_qty_label: String @doc(description: "Qty label")
+    tooltip_image_thumbnail_size: Int @doc(description: "Tooltip image size")
+    is_enabled_shareable_link: Boolean @doc(description: "Enable shareable link feature")
+    shareable_link_text: String @doc(description: "Shareable link text")
     shareable_link_hint_text: String @doc(description: "Shareable link hint text")
     shareable_link_success_text: String @doc(description: "Shareable link success text")
-    shareable_link_text: String @doc(description: "Shareable link text")
-    text_swatch_max_width: String @doc(description: "Swatch max width")
+    is_load_linked_product_enabled: Boolean @doc(description: "Enable Load Linked Product feature")
+    is_enabled_fide_value_price: Boolean @doc(description: "Enable Hide Value Price feature")
+    is_enabled_hide_product_page_value_price: Boolean @doc(description: "Enable 'Hide Value Price' On Product Page")
+    is_enabled_customize_and_add_to_cart_button: Boolean @doc(description: "Enable 'Customize and Add to cart' button")
+    is_show_swatch_title: Boolean @doc(description: "Display swatch as title")
+    is_show_swatch_price: Boolean @doc(description: "Show price in swatch")
     swatch_width: Int @doc(description: "Swatch width")
     swatch_height: Int @doc(description: "Swatch height")
+    text_swatch_max_width: String @doc(description: "Swatch max width")
+    is_enabled_option_inventory: Boolean @doc(description: "Enable option inventory feature")
+    is_display_option_inventory_on_frontend: Boolean @doc(description: "Display Option Qty on Front-end")
+    is_display_out_of_stock_message: Boolean @doc(description: "Display Out-Of-Stock message")
+    is_display_out_of_stock_message_on_options_level: Boolean @doc(description: "Display Out-Of-Stock message on options level")
+    is_display_out_of_stock_options: Boolean @doc(description: "Out-Of-Stock options. If true - out of stock options are disable If false - hide")
+    is_require_hidden_out_of_stock_options: Boolean @doc(description: "Show required 'Out of stock' options")
+    is_special_price_enabled: Boolean @doc(description: "Check if special price is enabled")
+    is_tier_price_enabled: Boolean @doc(description: "Check if tier price is enabled")
+    is_display_tier_price_table_needed: Boolean @doc(description: "Check if it is needed to display tier price table")
 }
 
 type SwatchMediaData @doc(description: "SwatchMediaData information, array of swatch media data") {
@@ -93,11 +112,11 @@ interface CustomizableOptionInterface {
     disabled_by_values: String @doc(description: "Is Disabled by Values")
     is_swatch: String @doc(description: "Is Swatch")
     is_hidden: String @doc(description: "Is Hidden")
+    selection_limit_from: String @doc(description: "Selection Limit From")
+    selection_limit_to: String @doc(description: "Selection Limit To")
 }
 
 type CustomizableCheckboxValue {
-    selection_limit_from: String @doc(description: "Selection Limit From")
-    selection_limit_to: String @doc(description: "Selection Limit To")
     mageworx_option_type_price: String @doc(description: "MageWorx Option Value Price")
     mageworx_title: String @doc(description: "MageWorx Option Value Title")
     special_price: String @doc(description: "Special Price")
