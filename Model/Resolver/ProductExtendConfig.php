@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace MageWorx\OptionGraphQl\Model\Resolver;
 
+use Magento\Store\Model\ScopeInterface;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
@@ -113,22 +114,38 @@ class ProductExtendConfig implements ResolverInterface
                 $this->registry->register('current_product', $product);
             }
 
+            try {
+                $store = $product->getStore();
+                $currency = $store->getDefaultCurrency();
+                $currencyCode = isset($currency) ? $currency->getCode() : null;
+            } catch (\Exception $exception) {
+                $currencyCode = null;
+            }
+
             $regularPriceExclTax = $this->priceCurrency->convert(
-                $this->baseConfig->getProductRegularPrice($product, false)
+                $this->baseConfig->getProductRegularPrice($product, false),
+                ScopeInterface::SCOPE_STORE,
+                $currencyCode
             );
             $regularPriceInclTax = $this->priceCurrency->convert(
-                $this->baseConfig->getProductRegularPrice($product, true)
+                $this->baseConfig->getProductRegularPrice($product, true),
+                ScopeInterface::SCOPE_STORE,
+                $currencyCode
             );
             $finalPriceExclTax   = $this->priceCurrency->convert(
-                $this->baseConfig->getProductFinalPrice($product, false, $qty)
+                $this->baseConfig->getProductFinalPrice($product, false, $qty),
+                ScopeInterface::SCOPE_STORE,
+                $currencyCode
             );
             $finalPriceInclTax   = $this->priceCurrency->convert(
-                $this->baseConfig->getProductFinalPrice($product, true, $qty)
+                $this->baseConfig->getProductFinalPrice($product, true, $qty),
+                ScopeInterface::SCOPE_STORE,
+                $currencyCode
             );
 
             $data['option_json_config']             = $this->viewOptions->getJsonConfig();
-            $data['product_json_config']            = $this->baseConfig->getProductJsonConfig($product);
-            $data['locale_price_format']            = $this->getLocalePriceFormat();
+            $data['product_json_config']            = $this->baseConfig->getProductJsonConfig($product, ScopeInterface::SCOPE_STORE, $currencyCode);
+            $data['locale_price_format']            = $this->getLocalePriceFormat(ScopeInterface::SCOPE_STORE, $currencyCode);
             $data['product_final_price_incl_tax']   = $finalPriceInclTax;
             $data['product_final_price_excl_tax']   = $finalPriceExclTax;
             $data['product_regular_price_incl_tax'] = $regularPriceInclTax;
@@ -143,10 +160,12 @@ class ProductExtendConfig implements ResolverInterface
         return $data;
     }
 
-    public function getLocalePriceFormat(): string
+    public function getLocalePriceFormat(?string $scope, ?string $currencyCode): string
     {
-        $data                = $this->localeFormat->getPriceFormat();
-        $data['priceSymbol'] = $this->priceCurrency->getCurrency()->getCurrencySymbol();
+        $data                = $this->localeFormat->getPriceFormat(null, $currencyCode);
+        $data['priceSymbol'] = $this->priceCurrency
+            ->getCurrency($scope, $currencyCode)
+            ->getCurrencySymbol();
 
         return $this->serializer->serialize($data);
     }
