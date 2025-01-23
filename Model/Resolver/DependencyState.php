@@ -62,7 +62,7 @@ class DependencyState implements ResolverInterface
     ): array {
         try {
             $productSku           = $args['productSku'] ?? false;
-            $selectedValuesString = $args['selectedValues'] ?? [];
+            $selectedValuesString = $args['selectedValues'] ?? '';
             $selectedValues       = explode(',', $selectedValuesString);
 
             $product = $this->productRepository->get($productSku);
