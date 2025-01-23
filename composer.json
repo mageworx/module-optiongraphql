@@ -8,7 +8,7 @@
         "mageworx/module-optionfeatures" : ">=2.31.19"
     },
     "type": "magento2-module",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "license": [
         "OSL-3.0",
         "AFL-3.0"

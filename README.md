@@ -808,10 +808,10 @@ Our module extends original Magento products GraphQL request to add our attribut
 ```
 </details>
 
-Please also see additional GraphQL requests below: 
+Please also see additional GraphQL requests below:
 
-### Dependency State: 
-Calculate the dependency and the default state. It returns the values that should be hidden and/or selected as the default, when the customers select certain options. 
+### Dependency State:
+Calculate the dependency and the default state. It returns the values that should be hidden and/or selected as the default, when the customers select certain options.
 
 <details>
   <summary>Dependency state request</summary>
@@ -894,17 +894,17 @@ The 'DependencyState' response contains the objects, which include the following
 
 The "preselected_values" duplicates the values, sent in the request, and adds the values, which should be shown and might be pre-selected.
 
-If you do not want to use this approach to calculate the dependencies and the default state for some reasons, we added the 'dependency_rules' fields to the Products request and response *(see the Products request and response above for more details)*. 
+If you do not want to use this approach to calculate the dependencies and the default state for some reasons, we added the 'dependency_rules' fields to the Products request and response *(see the Products request and response above for more details)*.
 
 Otherwise, we recommend to remove the 'dependency_rules' fields from the Products request to improve the performance.
 
 The 'dependency_rules' is the JSON row with the array of the rules. Every rule is the array with the following structure:
 
 - **conditions** - it is the array with the conditions. The possible keys inside each condition: {"values":["2418"],"type":"!eq","id":73}, where <br />
---- "id" - the option ID, <br />
---- "values" - the IDs of the values, <br />
---- "type" - possible values "eq" и "!eq", which means "equal", "not equal". <br />
-The condition in this example will be valid if the value with ID "2418" of the option  "73" is not selected.
+  --- "id" - the option ID, <br />
+  --- "values" - the IDs of the values, <br />
+  --- "type" - possible values "eq" и "!eq", which means "equal", "not equal". <br />
+  The condition in this example will be valid if the value with ID "2418" of the option  "73" is not selected.
 
 - **condition_type** - it is the logical operator, which is used to combine the conditions. Possible values: "OR", "AND".
 
@@ -1112,10 +1112,10 @@ The 'ProductExtendConfig' response contains the params, which include the follow
 - **price_display_mode** - the int with price display mode param
 - **catalog_price_contains_tax** - the boolean with catalog price contains tax param
 
-The 'option_json_config' has all value prices with included and excluded taxes, also has tier and special value data in 
+The 'option_json_config' has all value prices with included and excluded taxes, also has tier and special value data in
 ready to display format.
 
-The 'product_json_config' contains advanced product option attributes, product tier price data, product type, 
+The 'product_json_config' contains advanced product option attributes, product tier price data, product type,
 regular and final prouct prices with inc. and excl. taxes and product price display mode.
 
 The 'locale_price_format' has params to display product price format.
@@ -1163,7 +1163,7 @@ The 'ProductFinalPrice' request contains the next arguments:
   --- "170" and "175" - the option ID, <br />
   --- "1088" - the option value ID, <br />
 - **currentQty** - current product qty
-Note: The values exist for "selectable" options only. For the option types like "field", the "value ID" will be empty.
+  Note: The values exist for "selectable" options only. For the option types like "field", the "value ID" will be empty.
 
 The 'ProductFinalPrice' response contains the actual base and final prices which will be calculated with selected options using this query, which include the following keys:
 

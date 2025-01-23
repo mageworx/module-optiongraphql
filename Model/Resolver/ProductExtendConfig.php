@@ -113,28 +113,7 @@ class ProductExtendConfig implements ResolverInterface
                 $this->registry->register('current_product', $product);
             }
 
-            $regularPriceExclTax = $this->priceCurrency->convert(
-                $this->baseConfig->getProductRegularPrice($product, false)
-            );
-            $regularPriceInclTax = $this->priceCurrency->convert(
-                $this->baseConfig->getProductRegularPrice($product, true)
-            );
-            $finalPriceExclTax   = $this->priceCurrency->convert(
-                $this->baseConfig->getProductFinalPrice($product, false, $qty)
-            );
-            $finalPriceInclTax   = $this->priceCurrency->convert(
-                $this->baseConfig->getProductFinalPrice($product, true, $qty)
-            );
-
-            $data['option_json_config']             = $this->viewOptions->getJsonConfig();
-            $data['product_json_config']            = $this->baseConfig->getProductJsonConfig($product);
-            $data['locale_price_format']            = $this->getLocalePriceFormat();
-            $data['product_final_price_incl_tax']   = $finalPriceInclTax;
-            $data['product_final_price_excl_tax']   = $finalPriceExclTax;
-            $data['product_regular_price_incl_tax'] = $regularPriceInclTax;
-            $data['product_regular_price_excl_tax'] = $regularPriceExclTax;
-            $data['price_display_mode']             = $this->baseConfig->getPriceDisplayMode();
-            $data['catalog_price_contains_tax']     = $this->baseConfig->getCatalogPriceContainsTax();
+            $data = $this->resolveData($product, $qty);
 
         } catch (NoSuchEntityException $e) {
             throw new GraphQlNoSuchEntityException(__($e->getMessage()), $e);
@@ -149,5 +128,33 @@ class ProductExtendConfig implements ResolverInterface
         $data['priceSymbol'] = $this->priceCurrency->getCurrency()->getCurrencySymbol();
 
         return $this->serializer->serialize($data);
+    }
+
+    public function resolveData($product, $qty = 1): array
+    {
+        $regularPriceExclTax = $this->priceCurrency->convert(
+            $this->baseConfig->getProductRegularPrice($product, false)
+        );
+        $regularPriceInclTax = $this->priceCurrency->convert(
+            $this->baseConfig->getProductRegularPrice($product, true)
+        );
+        $finalPriceExclTax   = $this->priceCurrency->convert(
+            $this->baseConfig->getProductFinalPrice($product, false, $qty)
+        );
+        $finalPriceInclTax   = $this->priceCurrency->convert(
+            $this->baseConfig->getProductFinalPrice($product, true, $qty)
+        );
+
+        $data['option_json_config']             = $this->viewOptions->getJsonConfig();
+        $data['product_json_config']            = $this->baseConfig->getProductJsonConfig($product);
+        $data['locale_price_format']            = $this->getLocalePriceFormat();
+        $data['product_final_price_incl_tax']   = $finalPriceInclTax;
+        $data['product_final_price_excl_tax']   = $finalPriceExclTax;
+        $data['product_regular_price_incl_tax'] = $regularPriceInclTax;
+        $data['product_regular_price_excl_tax'] = $regularPriceExclTax;
+        $data['price_display_mode']             = $this->baseConfig->getPriceDisplayMode();
+        $data['catalog_price_contains_tax']     = $this->baseConfig->getCatalogPriceContainsTax();
+
+        return $data;
     }
 }
