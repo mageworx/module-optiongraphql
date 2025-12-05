@@ -23,7 +23,7 @@ class ProductFinalPrice implements ResolverInterface
     /**
      * Item options prefix
      */
-    const OPTION_PREFIX = \Magento\Catalog\Model\Product\Type\AbstractType::OPTION_PREFIX;
+    public const OPTION_PREFIX = \Magento\Catalog\Model\Product\Type\AbstractType::OPTION_PREFIX;
 
     protected ProductRepository $productRepository;
     protected Price $priceModel;
@@ -67,11 +67,11 @@ class ProductFinalPrice implements ResolverInterface
      * @throws GraphQlNoSuchEntityException
      */
     public function resolve(
-        Field $field,
-        $context,
+        Field       $field,
+                    $context,
         ResolveInfo $info,
-        array $value = null,
-        array $args = null
+        ?array      $value = null,
+        ?array      $args = null
     ): array {
         $data = [];
 

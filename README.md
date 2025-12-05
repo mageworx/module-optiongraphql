@@ -903,7 +903,7 @@ The 'dependency_rules' is the JSON row with the array of the rules. Every rule i
 - **conditions** - it is the array with the conditions. The possible keys inside each condition: {"values":["2418"],"type":"!eq","id":73}, where <br />
   --- "id" - the option ID, <br />
   --- "values" - the IDs of the values, <br />
-  --- "type" - possible values "eq" и "!eq", which means "equal", "not equal". <br />
+  --- "type" - possible values "eq" and "!eq", which means "equal", "not equal". <br />
   The condition in this example will be valid if the value with ID "2418" of the option  "73" is not selected.
 
 - **condition_type** - it is the logical operator, which is used to combine the conditions. Possible values: "OR", "AND".

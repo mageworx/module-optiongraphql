@@ -53,11 +53,11 @@ class SwatchMediaData implements ResolverInterface
      * @throws GraphQlNoSuchEntityException
      */
     public function resolve(
-        Field $field,
-        $context,
+        Field       $field,
+                    $context,
         ResolveInfo $info,
-        array $value = null,
-        array $args = null
+        ?array      $value = null,
+        ?array      $args = null
     ) {
         try {
             $productSku = $args['productSku'] ?? false;
