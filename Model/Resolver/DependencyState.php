@@ -54,15 +54,15 @@ class DependencyState implements ResolverInterface
      * @inheritdoc
      */
     public function resolve(
-        Field $field,
-        $context,
+        Field       $field,
+                    $context,
         ResolveInfo $info,
-        array $value = null,
-        array $args = null
+        ?array      $value = null,
+        ?array      $args = null
     ): array {
         try {
             $productSku           = $args['productSku'] ?? false;
-            $selectedValuesString = $args['selectedValues'] ?? '';
+            $selectedValuesString = $args['selectedValues'] ?? [];
             $selectedValues       = explode(',', $selectedValuesString);
 
             $product = $this->productRepository->get($productSku);
