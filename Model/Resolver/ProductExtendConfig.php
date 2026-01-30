@@ -157,7 +157,6 @@ class ProductExtendConfig implements ResolverInterface
                 'slider_default_from',
                 'slider_default_to',
                 'slider_mode',
-                'slider_precision',
                 'color_picker_enabled',
                 'color_picker_default',
             ],

@@ -1,0 +1,6 @@
+Mageworx Extension License
+Copyright © MGWorx, LLC d/b/a MageWorx. All rights reserved.
+This extension is licensed under the MGWorx, LLC Terms of Use for the Mageworx platform and products (the “Terms”):
+https://www.mageworx.com/terms-and-conditions
+By installing, copying, or using this extension, you agree to be bound by the Terms.
+If there is any conflict between this file and the online Terms, the online Terms shall prevail.
