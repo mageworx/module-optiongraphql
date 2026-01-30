@@ -33,6 +33,7 @@ type ProductFinalPrice @doc(description: "ProductFinalPrice, final product price
 
 type ProductExtendConfig @doc(description: "ProductExtendConfig information, array of product price configuration") {
     option_json_config: String @doc(description: "JSON with option config")
+    extended_options_config: String @doc(description: "JSON with extended option config")
     product_json_config: String @doc(description: "JSON with product config")
     locale_price_format: String @doc(description: "JSON with local price format")
     product_final_price_incl_tax: Float @doc(description: "Product final price incl tax")
@@ -220,4 +221,8 @@ type CustomizableDateValue {
     dependency_type: String @doc(description: "Dependency Type")
     mageworx_option_price: String @doc(description: "MageWorx Option Price")
     mageworx_title: String @doc(description: "MageWorx Option Title")
+}
+
+enum PriceTypeEnum {
+    STEP @doc(description: "MageWorx step-based pricing for custom options.")
 }

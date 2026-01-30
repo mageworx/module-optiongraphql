@@ -146,6 +146,22 @@ class ProductExtendConfig implements ResolverInterface
         );
 
         $data['option_json_config']             = $this->viewOptions->getJsonConfig();
+        $data['extended_options_config']        = $this->baseConfig->getExtendedOptionsConfig(
+            $product,
+            [
+                'description',
+                'slider_enabled',
+                'slider_min',
+                'slider_max',
+                'slider_step',
+                'slider_default_from',
+                'slider_default_to',
+                'slider_mode',
+                'color_picker_enabled',
+                'color_picker_default',
+            ],
+            ['description']
+        );
         $data['product_json_config']            = $this->baseConfig->getProductJsonConfig($product);
         $data['locale_price_format']            = $this->getLocalePriceFormat();
         $data['product_final_price_incl_tax']   = $finalPriceInclTax;
