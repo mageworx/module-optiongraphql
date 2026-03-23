@@ -1,4 +1,4 @@
-type Query {
+extend type Query {
     dependencyState (
         productSku : String @doc(description: "Product SKU")
         selectedValues : String @doc(description: "Selected option value IDs to calculate dependencies")
@@ -86,7 +86,7 @@ type SwatchMediaData @doc(description: "SwatchMediaData information, array of sw
     swatch_media_data: String @doc(description: "JSON with swatch media data")
 }
 
-interface ProductInterface {
+extend interface ProductInterface {
     dependency_rules: String @doc(description: "Dependency Rules")
     hidden_dependents: String @doc(description: "Hidden Dependents")
     absolute_price: String @doc(description: "Absolute Price")
@@ -97,7 +97,7 @@ interface ProductInterface {
     hide_additional_product_price: String @doc(description: "Hide Additional Product Price")
 }
 
-interface CustomizableOptionInterface {
+extend interface CustomizableOptionInterface {
     description: String @doc(description: "Description")
     sku_policy: String @doc(description: "Sku Policy")
     qty_input: String @doc(description: "Qty Input")
@@ -117,7 +117,7 @@ interface CustomizableOptionInterface {
     selection_limit_to: String @doc(description: "Selection Limit To")
 }
 
-type CustomizableCheckboxValue {
+extend type CustomizableCheckboxValue {
     mageworx_option_type_price: String @doc(description: "MageWorx Option Value Price")
     mageworx_title: String @doc(description: "MageWorx Option Value Title")
     special_price: String @doc(description: "Special Price")
@@ -136,7 +136,7 @@ type CustomizableCheckboxValue {
     disabled: String @doc(description: "Is Disabled")
 }
 
-type CustomizableRadioValue {
+extend type CustomizableRadioValue {
     mageworx_option_type_price: String @doc(description: "MageWorx Option Value Price")
     mageworx_title: String @doc(description: "MageWorx Option Value Title")
     special_price: String @doc(description: "Special Price")
@@ -155,7 +155,7 @@ type CustomizableRadioValue {
     disabled: String @doc(description: "Is Disabled")
 }
 
-type CustomizableDropDownValue {
+extend type CustomizableDropDownValue {
     mageworx_option_type_price: String @doc(description: "MageWorx Option Value Price")
     mageworx_title: String @doc(description: "MageWorx Option Value Title")
     special_price: String @doc(description: "Special Price")
@@ -174,7 +174,7 @@ type CustomizableDropDownValue {
     disabled: String @doc(description: "Is Disabled")
 }
 
-type CustomizableMultipleValue {
+extend type CustomizableMultipleValue {
     selection_limit_from: String @doc(description: "Selection Limit From")
     selection_limit_to: String @doc(description: "Selection Limit To")
     mageworx_option_type_price: String @doc(description: "MageWorx Option Value Price")
@@ -195,34 +195,34 @@ type CustomizableMultipleValue {
     disabled: String @doc(description: "Is Disabled")
 }
 
-type CustomizableFieldValue {
+extend type CustomizableFieldValue {
     dependency: String @doc(description: "Dependency")
     dependency_type: String @doc(description: "Dependency Type")
     mageworx_option_price: String @doc(description: "MageWorx Option Price")
     mageworx_title: String @doc(description: "MageWorx Option Title")
 }
 
-type CustomizableAreaValue {
+extend type CustomizableAreaValue {
     dependency: String @doc(description: "Dependency")
     dependency_type: String @doc(description: "Dependency Type")
     mageworx_option_price: String @doc(description: "MageWorx Option Price")
     mageworx_title: String @doc(description: "MageWorx Option Title")
 }
 
-type CustomizableFileValue {
+extend type CustomizableFileValue {
     dependency: String @doc(description: "Dependency")
     dependency_type: String @doc(description: "Dependency Type")
     mageworx_option_price: String @doc(description: "MageWorx Option Price")
     mageworx_title: String @doc(description: "MageWorx Option Title")
 }
 
-type CustomizableDateValue {
+extend type CustomizableDateValue {
     dependency: String @doc(description: "Dependency")
     dependency_type: String @doc(description: "Dependency Type")
     mageworx_option_price: String @doc(description: "MageWorx Option Price")
     mageworx_title: String @doc(description: "MageWorx Option Title")
 }
 
-enum PriceTypeEnum {
+extend enum PriceTypeEnum {
     STEP @doc(description: "MageWorx step-based pricing for custom options.")
 }
