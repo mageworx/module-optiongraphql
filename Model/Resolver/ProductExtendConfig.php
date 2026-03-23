@@ -105,7 +105,7 @@ class ProductExtendConfig implements ResolverInterface
 
         try {
             $productSku = $args['productSku'] ?? false;
-            $qty        = $args['Qty'] ?? 1;
+            $qty        = $args['qty'] ?? 1;
 
             $product = $this->productRepository->get($productSku);
 
