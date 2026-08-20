@@ -109,12 +109,21 @@ class ProductExtendConfig implements ResolverInterface
 
             $product = $this->productRepository->get($productSku);
 
+            // The registry is request-scoped and shared with every other resolver in the same
+            // query, so whatever we register here must be taken back out again.
+            $registered = false;
             if (empty($this->registry->registry('current_product'))) {
                 $this->registry->register('current_product', $product);
+                $registered = true;
             }
 
-            $data = $this->resolveData($product, $qty);
-
+            try {
+                $data = $this->resolveData($product, $qty);
+            } finally {
+                if ($registered) {
+                    $this->registry->unregister('current_product');
+                }
+            }
         } catch (NoSuchEntityException $e) {
             throw new GraphQlNoSuchEntityException(__($e->getMessage()), $e);
         }
