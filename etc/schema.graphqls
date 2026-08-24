@@ -134,6 +134,7 @@ extend type CustomizableCheckboxValue {
     qty: String @doc(description: "Quantity")
     manage_stock: String @doc(description: "Manage Stock")
     disabled: String @doc(description: "Is Disabled")
+    mageworx_linked_product_disabled: String @doc(description: "Linked product is disabled")
 }
 
 extend type CustomizableRadioValue {
@@ -153,6 +154,7 @@ extend type CustomizableRadioValue {
     qty: String @doc(description: "Quantity")
     manage_stock: String @doc(description: "Manage Stock")
     disabled: String @doc(description: "Is Disabled")
+    mageworx_linked_product_disabled: String @doc(description: "Linked product is disabled")
 }
 
 extend type CustomizableDropDownValue {
@@ -172,6 +174,7 @@ extend type CustomizableDropDownValue {
     qty: String @doc(description: "Quantity")
     manage_stock: String @doc(description: "Manage Stock")
     disabled: String @doc(description: "Is Disabled")
+    mageworx_linked_product_disabled: String @doc(description: "Linked product is disabled")
 }
 
 extend type CustomizableMultipleValue {
@@ -193,6 +196,7 @@ extend type CustomizableMultipleValue {
     qty: String @doc(description: "Quantity")
     manage_stock: String @doc(description: "Manage Stock")
     disabled: String @doc(description: "Is Disabled")
+    mageworx_linked_product_disabled: String @doc(description: "Linked product is disabled")
 }
 
 extend type CustomizableFieldValue {
